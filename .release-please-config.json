@@ -1,0 +1,6 @@
+{
+  "packages": {
+    "path/to/pkg": {}
+  },
+  "bump-minor-pre-major": true
+}
