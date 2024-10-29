@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>tailwind-browser Demo</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>"
+    />
+  </head>
+  <body>
+    <script type="module">
+      import generateCss from "./tailwind-browser.js";
+
+      const markup = `
+      <div class="mx-auto flex md:grid mt-2 text-lg hover:underline dark:bg-black"></div>
+    `;
+
+      const css = `
+      @theme {
+        --color-*: initial;
+        --color-black: #000;
+        --breakpoint-md: 768px;
+        --font-size-lg: 24px;
+      }
+    `;
+      generateCss({ markup, css }).then(console.log);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "name": "tailwind-browser",
+  "version": "0.0.1",
+  "description": "Tailwind CSS 4 running purely in the browser",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/balintbrews/tailwind-browser.git"
+  },
+  "author": "Bálint Kléri (https://balintbrews.com)",
+  "bugs": "https://github.com/balintbrews/tailwind-browser/issues",
+  "homepage": "https://github.com/balintbrews/tailwind-browser#readme",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+    "@types/node": "^22.8.2",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.3.3",
+    "tsup": "^8.3.5",
+    "typescript": "~5.5.4"
+  },
+  "dependencies": {
+    "tailwindcss-v3": "npm:tailwindcss@^3.4.14",
+    "tailwindcss-v4": "npm:tailwindcss@^4.0.0-alpha.30"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "scripts": {
+    "dev": "tsup --env.NODE_ENV development --watch",
+    "build": "tsup --minify --env.NODE_ENV production",
+    "code:check": "run-s -c -n code:check:**",
+    "code:check:tsc": "tsc --noEmit",
+    "code:check:prettier": "npm run s:prettier -- --check",
+    "code:check:eslint": "npm run s:eslint",
+    "code:fix": "run-s -c -n code:fix:**",
+    "code:fix:prettier": "npm run s:prettier -- --write",
+    "code:fix:eslint": "npm run s:eslint -- --fix",
+    "s:prettier": "prettier \"**/*.{ts,json,html,md}\"",
+    "s:eslint": "eslint \"**/*.ts\""
+  }
+}
