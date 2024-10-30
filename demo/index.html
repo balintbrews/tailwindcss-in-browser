@@ -23,9 +23,10 @@
           --font-size-lg: 24px;
         }
       `;
-      generateCss({ markup, css, options: { minify: false } }).then(
-        console.log,
-      );
+      generateCss(markup, css, {
+        compileCssOptions: { addPreflight: false },
+        transformCssOptions: { minify: false },
+      }).then(console.log);
     </script>
   </body>
 </html>

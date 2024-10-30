@@ -29,7 +29,7 @@ generateCss({ markup, css }).then((generatedCss) => {
 ## Remaining work
 
 - [x] Transform the generated CSS;
-- [ ] Add base/preflight CSS;
+- [x] Add base/preflight CSS;
 - [ ] Improve README;
 - [ ] Create and deploy basic demo page;
 - [ ] Publish to npm.
