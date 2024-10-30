@@ -9,7 +9,7 @@
   </head>
   <body>
     <script type="module">
-      import generateCss from "./tailwind-browser-dist/index.js";
+      import buildCss from "./tailwind-browser-dist/index.js";
 
       const markup = `
         <div class="mx-auto flex md:grid mt-2 text-lg hover:underline dark:bg-black"></div>
@@ -23,7 +23,7 @@
           --font-size-lg: 24px;
         }
       `;
-      generateCss(markup, css, {
+      buildCss(markup, css, {
         compileCssOptions: { addPreflight: false },
         transformCssOptions: { minify: false },
       }).then(console.log);

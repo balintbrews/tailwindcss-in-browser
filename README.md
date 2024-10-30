@@ -11,7 +11,7 @@ the browser.
 ## Usage
 
 ```javascript
-import generateCss from "tailwind-browser";
+import buildCss from "tailwind-browser";
 
 const markup =
   '<div class="text-2xl font-semibold text-teal-600">Hello, world!</div>';
@@ -21,8 +21,8 @@ const markup =
 const css =
   "@theme { --font-size-2xl: 1.75rem; --font-size-2xl--line-height: 2.25rem; }";
 
-generateCss({ markup, css }).then((generatedCss) => {
-  // `generatedCss` is a string of CSS produced by Tailwind CSS 4 on-the-fly.
+buildCss({ markup, css }).then((css) => {
+  // `css` is a string produced by Tailwind CSS 4 on-the-fly.
 });
 ```
 

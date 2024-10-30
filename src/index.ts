@@ -143,7 +143,13 @@ async function transformCss(
 }
 
 /**
- * Generates CSS with Tailwind V4 using the given markup and CSS configuration.
+ * Builds CSS with Tailwind V4 using the given markup and CSS configuration.
+ *
+ * Process: extract class names from markup → Compile CSS → Transform CSS.
+ * - @see {extractClassNameCandidates}
+ * - @see {compileCss}
+ * - @see {transformCss}
+ * For more granular control, use the individual functions.
  *
  * @param markup - The markup from which to extract Tailwind classes for
  *     generating the CSS.
@@ -156,7 +162,7 @@ async function transformCss(
  *
  * @returns Compiled and transformed CSS.
  */
-async function generateCss(
+async function buildCss(
   markup: string,
   configurationCss: string,
   {
@@ -179,4 +185,4 @@ async function generateCss(
 
 export { extractClassNameCandidates, compileCss, transformCss };
 export type { CompileCssOptions, TransformCssOptions };
-export default generateCss;
+export default buildCss;
