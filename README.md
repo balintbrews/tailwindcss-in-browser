@@ -28,7 +28,7 @@ generateCss({ markup, css }).then((generatedCss) => {
 
 ## Remaining work
 
-- [ ] Transpile the generated CSS;
+- [x] Transform the generated CSS;
 - [ ] Add base/preflight CSS;
 - [ ] Improve README;
 - [ ] Create and deploy basic demo page;

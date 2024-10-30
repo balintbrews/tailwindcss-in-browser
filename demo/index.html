@@ -9,21 +9,23 @@
   </head>
   <body>
     <script type="module">
-      import generateCss from "./tailwind-browser.js";
+      import generateCss from "./tailwind-browser-dist/index.js";
 
       const markup = `
-      <div class="mx-auto flex md:grid mt-2 text-lg hover:underline dark:bg-black"></div>
-    `;
+        <div class="mx-auto flex md:grid mt-2 text-lg hover:underline dark:bg-black"></div>
+      `;
 
       const css = `
-      @theme {
-        --color-*: initial;
-        --color-black: #000;
-        --breakpoint-md: 768px;
-        --font-size-lg: 24px;
-      }
-    `;
-      generateCss({ markup, css }).then(console.log);
+        @theme {
+          --color-*: initial;
+          --color-black: #000;
+          --breakpoint-md: 768px;
+          --font-size-lg: 24px;
+        }
+      `;
+      generateCss({ markup, css, options: { minify: false } }).then(
+        console.log,
+      );
     </script>
   </body>
 </html>

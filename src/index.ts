@@ -1,3 +1,8 @@
+import lightningCssInit, {
+  Features as LightningCssFeatures,
+  transform as lightningCssTransform,
+} from "lightningcss-wasm";
+import lightningCssWasm from "lightningcss-wasm/lightningcss_node.wasm";
 import { defaultExtractor as tailwindV3Extractor } from "tailwindcss-v3/lib/lib/defaultExtractor.js";
 import { compile as tailwindV4Compile } from "tailwindcss-v4";
 import tailwindV4DefaultThemeCss from "tailwindcss-v4/theme.css";
@@ -35,9 +40,8 @@ function extractClassNameCandidates(markup: string): string[] {
  * @param css - CSS that acts as the Tailwind V4 configuration, as well as any
  * additional CSS.
  * @see {GenerateCssArgs['css']}
- * @returns The compiled CSS. The syntax is modern CSS syntax that needs
- * transpiling to be compatible with older browsers, adding vendor prefixing and
- * syntax lowering.
+ * @returns The compiled CSS. The syntax is modern CSS syntax that needs to be
+ * transformed to ensure compatibility with older browsers.
  */
 async function compileTailwindCss(
   classNameCandidates: string[],
@@ -52,6 +56,46 @@ async function compileTailwindCss(
     `,
   );
   return build(classNameCandidates);
+}
+
+/**
+ * Transforms CSS to ensure compatibility with older browsers.
+ *
+ * Uses the WASM build of Lightning CSS to match the behavior of Tailwind 4's
+ * CLI.
+ *
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.30/packages/%40tailwindcss-cli/src/commands/build/index.ts#L378
+ *
+ * @param css - The CSS to transform.
+ * @param options - Options for transforming the CSS.
+ * @param options.minify - Whether to minify the CSS.
+ * @returns The transformed CSS.
+ */
+async function transformCss(
+  css: string,
+  { minify = true }: { minify?: boolean } = {},
+): Promise<string> {
+  await lightningCssInit(new URL(lightningCssWasm, import.meta.url).href);
+
+  const { code } = lightningCssTransform({
+    filename: "input.css",
+    code: new TextEncoder().encode(css),
+    minify,
+    drafts: {
+      customMedia: true,
+    },
+    nonStandard: {
+      deepSelectorCombinator: true,
+    },
+    include: LightningCssFeatures.Nesting,
+    exclude: LightningCssFeatures.LogicalProperties,
+    targets: {
+      safari: (16 << 16) | (4 << 8), // eslint-disable-line no-bitwise
+    },
+    errorRecovery: true,
+  });
+
+  return new TextDecoder().decode(code);
 }
 
 /**
@@ -72,22 +116,40 @@ type GenerateCssArgs = {
    * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.30/packages/tailwindcss/theme.css
    */
   css: string;
+  /**
+   * Options for generating the CSS.
+   */
+  options?: {
+    /**
+     * Whether to minify the CSS.
+     *
+     * @default true
+     */
+    minify?: boolean;
+  };
 };
 
 /**
  * Generates CSS with Tailwind V4 using the given markup and CSS.
  *
  * @param args - Arguments for generating CSS.
+ * @see {GenerateCssArgs}
  * @returns The generated CSS, ready to be added in a `<style>` tag or used any
  * other way.
  */
-async function generateCss({ markup, css }: GenerateCssArgs): Promise<string> {
+async function generateCss({
+  markup,
+  css,
+  options,
+}: GenerateCssArgs): Promise<string> {
   const classNameCandidates = extractClassNameCandidates(markup);
   const compiledCss = await compileTailwindCss(classNameCandidates, css);
-  // @todo Transpile CSS.
-  return compiledCss;
+  const transformedCss = await transformCss(compiledCss, {
+    minify: options?.minify ?? true,
+  });
+  return transformedCss;
 }
 
-export { extractClassNameCandidates, compileTailwindCss };
+export { extractClassNameCandidates, compileTailwindCss, transformCss };
 export type { GenerateCssArgs };
 export default generateCss;
