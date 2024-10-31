@@ -4,6 +4,12 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -20,13 +26,5 @@
         "ignoreTemplateLiterals": true
       }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["tsup.config.ts"],
-      "rules": {
-        "import/no-extraneous-dependencies": "off"
-      }
-    }
-  ]
+  }
 }
