@@ -10,6 +10,12 @@
   "author": "Bálint Kléri (https://balintbrews.com)",
   "bugs": "https://github.com/balintbrews/tailwindcss-in-browser/issues",
   "homepage": "https://github.com/balintbrews/tailwindcss-in-browser#readme",
+  "keywords": [
+    "css",
+    "tailwind",
+    "tailwindcss",
+    "tailwindcss-v4"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
