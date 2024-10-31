@@ -1,15 +1,15 @@
 {
-  "name": "tailwind-browser",
+  "name": "tailwindcss-in-browser",
   "version": "0.0.1",
   "description": "Tailwind CSS 4 running purely in the browser",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/balintbrews/tailwind-browser.git"
+    "url": "https://github.com/balintbrews/tailwindcss-in-browser.git"
   },
   "author": "Bálint Kléri (https://balintbrews.com)",
-  "bugs": "https://github.com/balintbrews/tailwind-browser/issues",
-  "homepage": "https://github.com/balintbrews/tailwind-browser#readme",
+  "bugs": "https://github.com/balintbrews/tailwindcss-in-browser/issues",
+  "homepage": "https://github.com/balintbrews/tailwindcss-in-browser#readme",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

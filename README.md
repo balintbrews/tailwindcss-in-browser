@@ -1,18 +1,17 @@
-<h1><code style="font-weight: bold; font-size: 2rem;">tailwind-browser</code></h1>
+<h1><code style="font-weight: bold; font-size: 2rem;">tailwindcss-in-browser</code></h1>
 <p>
-  <a href="https://github.com/balintbrews/tailwind-browser/actions">
-    <img src="https://github.com/balintbrews/tailwind-browser/actions/workflows/tests.yml/badge.svg" alt="Build status">
+  <a href="https://github.com/balintbrews/tailwindcss-in-browser/actions">
+    <img src="https://github.com/balintbrews/tailwindcss-in-browser/actions/workflows/tests.yml/badge.svg" alt="Build status">
   </a>
 </p>
 
-A JavaScript library that enables
-[Tailwind CSS 4](https://tailwindcss.com/blog/tailwindcss-v4-alpha) to build CSS
-directly in the browser.
+A JavaScript library that enables you to build CSS directly in the browser using
+[Tailwind CSS 4](https://tailwindcss.com/blog/tailwindcss-v4-alpha).
 
 ## Usage
 
 ```javascript
-import buildCss from "tailwind-browser";
+import buildCss from "tailwindcss-in-browser";
 
 const markup =
   '<div class="text-2xl text-teal-600 font-semibold">Hello, world!</div>';
