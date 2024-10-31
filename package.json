@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/balintbrews/tailwindcss-in-browser.git"
+    "url": "git+https://github.com/balintbrews/tailwindcss-in-browser.git"
   },
   "author": "Bálint Kléri (https://balintbrews.com)",
   "bugs": "https://github.com/balintbrews/tailwindcss-in-browser/issues",
@@ -19,6 +19,9 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "@types/node": "^22.8.2",
@@ -48,6 +51,7 @@
   "scripts": {
     "dev": "tsup --env.NODE_ENV development --watch",
     "build": "tsup --minify --env.NODE_ENV production",
+    "prepublishOnly": "npm run build",
     "code:check": "run-s -c -n code:check:**",
     "code:check:tsc": "tsc --noEmit",
     "code:check:prettier": "npm run s:prettier -- --check",
