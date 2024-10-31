@@ -8,6 +8,12 @@
 A JavaScript library that enables you to build CSS directly in the browser using
 [Tailwind CSS 4](https://tailwindcss.com/blog/tailwindcss-v4-alpha).
 
+## Installation
+
+```bash
+npm install tailwindcss-in-browser
+```
+
 ## Usage
 
 ```javascript
@@ -30,6 +36,17 @@ buildCss(markup, configurationCss, {
 }).then((css) => {
   // `css` contains the generated Tailwind CSS styles.
 });
+```
+
+This library is available as an ES module and works with both module bundlers
+and directly in browsers:
+
+```html
+<script type="module">
+  import buildCss from "https://unpkg.com/tailwindcss-in-browser";
+
+  // ...
+</script>
 ```
 
 ## How it works
