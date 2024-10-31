@@ -1,4 +1,4 @@
 dist
 node_modules
-demo/tailwind-browser-dist
+demo/tailwindcss-in-browser-dist
 CHANGELOG.md

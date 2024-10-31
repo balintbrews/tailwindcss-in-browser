@@ -17,6 +17,6 @@ export default defineConfig({
   },
   async onSuccess() {
     // Copy the `dist` directory to the `demo` folder for easy access.
-    await cp("dist", "demo/tailwind-browser-dist", { recursive: true });
+    await cp("dist", "demo/tailwindcss-in-browser-dist", { recursive: true });
   },
 });
