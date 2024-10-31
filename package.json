@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-in-browser",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Building CSS directly in the browser using Tailwind CSS 4.",
   "license": "MIT",
   "repository": {
