@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.0...tailwindcss-in-browser-v0.1.1) (2024-10-31)
+
+
+### Bug Fixes
+
+* optimize dependencies ([93a4539](https://github.com/balintbrews/tailwindcss-in-browser/commit/93a45391bdf0fa81bfd8c930c60d8bc0e6b3d82a))
+
 ## [0.1.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.0.1...tailwindcss-in-browser-v0.1.0) (2024-10-31)
 
 
