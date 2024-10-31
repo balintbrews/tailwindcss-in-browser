@@ -85,7 +85,7 @@ the following:
 
 - the [`base`/`preflight` layer](https://tailwindcss.com/docs/preflight),
 - the
-  [default Tailwind CSS 4 theme](https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.30/packages/tailwindcss/theme.css);
+  [default Tailwind CSS 4 theme](https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.31/packages/tailwindcss/theme.css);
 - the `components` layer —yet to be implemented in Tailwind CSS 4—, and
 - the `utilities` layer where the actual Tailwind CSS classes are defined.
 

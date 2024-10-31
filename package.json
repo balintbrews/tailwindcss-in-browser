@@ -38,7 +38,7 @@
   "dependencies": {
     "lightningcss-wasm": "^1.27.0",
     "tailwindcss-v3": "npm:tailwindcss@^3.4.14",
-    "tailwindcss-v4": "npm:tailwindcss@^4.0.0-alpha.30"
+    "tailwindcss-v4": "npm:tailwindcss@^4.0.0-alpha.31"
   },
   "config": {
     "commitizen": {
