@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.2...tailwindcss-in-browser-v0.1.3) (2024-11-22)
+
+
+### Bug Fixes
+
+* correct esbuildOptions config for proper WASM file naming ([#11](https://github.com/balintbrews/tailwindcss-in-browser/issues/11)) ([5bbd953](https://github.com/balintbrews/tailwindcss-in-browser/commit/5bbd953bade8f6db6927abd086d04e1db9de3895))
+
 ## [0.1.2](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.1...tailwindcss-in-browser-v0.1.2) (2024-11-22)
 
 
