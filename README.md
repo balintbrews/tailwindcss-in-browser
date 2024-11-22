@@ -49,6 +49,21 @@ and directly in browsers:
 </script>
 ```
 
+## Note for Vite users
+
+If you use Vite, add the following to your config:
+
+```javascript
+{
+  optimizeDeps: {
+    exclude: ["tailwindcss-in-browser"],
+  },
+};
+```
+
+This workaround is needed until
+[vitejs/vite#8427](https://github.com/vitejs/vite/issues/8427) is fixed.
+
 ## How it works
 
 1. A function from Tailwind CSS 3 is used to extract class names from the
