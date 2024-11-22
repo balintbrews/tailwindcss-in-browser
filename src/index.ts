@@ -48,22 +48,22 @@ type CompileCssOptions = {
  * Compiles CSS from class name candidates and Tailwind 4 configuration CSS.
  *
  * Uses Tailwind 4 where configuration is done via CSS variables.
- * @see https://tailwindcss.com/blog/tailwindcss-v4-alpha#css-first-configuration
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.31/packages/tailwindcss/src/index.ts#L483
+ * @see https://tailwindcss.com/docs/v4-beta#css-first-configuration
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-beta.1/packages/tailwindcss/src/index.ts#L494
  *
  * @param classNameCandidates - The class name candidates for compilation.
  * @param [configurationCss] - CSS that acts as the Tailwind V4 configuration,
  *     as well as any additional CSS. This is where you would normally add
  *     `@import "tailwindcss"`, which imports the followings:
  *       - the default theme,
- *         @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.31/packages/tailwindcss/theme.css
+ *         @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-beta.1/packages/tailwindcss/theme.css
  *       - the `base`/`preflight` layer,
  *       - the `components` layer —yet to be implemented in Tailwind 4—, and
  *       - the `utilities` layer.
  *     All of the above are already taken care of in this function. All you need
  *     to do is add your customizations with a `@theme` directive. See what you
  *     can override in Tailwind 4's default theme.
- *     @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.31/packages/tailwindcss/theme.css
+ *     @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-beta.1/packages/tailwindcss/theme.css
  *     You also have the option to skip adding the `base`/`preflight` layer.
  *     @see {CompileCssOptions.addPreflight}
  * @param options - Options for compiling the CSS.
@@ -107,7 +107,7 @@ type TransformCssOptions = {
  * Uses the WASM build of Lightning CSS to match the behavior of Tailwind 4's
  * CLI.
  *
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-alpha.31/packages/%40tailwindcss-cli/src/commands/build/index.ts#L382
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0-beta.1/packages/%40tailwindcss-cli/src/commands/build/index.ts#L409
  *
  * @param css - The CSS to transform.
  * @param options - Options for transforming the CSS.
