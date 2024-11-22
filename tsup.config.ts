@@ -47,8 +47,8 @@ export default defineConfig({
     // `index.js` file. What's lucky is that it's the only generated JS file.
     js: `import './lightningcss_node-${lightningCssWasmVersion}.wasm?url';`,
   },
-  esbuildOptions: (options) => ({
-    ...options,
+  /* eslint-disable no-param-reassign */
+  esbuildOptions(options) {
     // By default esbuild generates a hash for the filename based on the file
     // contents, which would work well, but there is no easy way to access the
     // generated hash value, which we will also need in the `banner` option
@@ -60,8 +60,9 @@ export default defineConfig({
     // but it doesn't contain any information about the asset being bundled.)
     // What's lucky is that the Lightning CSS WASM file is the only bundled
     // asset file.
-    assetNames: `[name]-${lightningCssWasmVersion}`,
-  }),
+    options.assetNames = `[name]-${lightningCssWasmVersion}`;
+  },
+  /* eslint-enable no-param-reassign */
   async onSuccess() {
     // Copy the `dist` directory to the `demo` folder for easy access.
     await cp("dist", "demo/tailwindcss-in-browser-dist", { recursive: true });
