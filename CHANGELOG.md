@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.1...tailwindcss-in-browser-v0.1.2) (2024-11-22)
+
+
+### Bug Fixes
+
+* ensure file from lightningcss-wasm is included in consumer bundles ([#9](https://github.com/balintbrews/tailwindcss-in-browser/issues/9)) ([217487c](https://github.com/balintbrews/tailwindcss-in-browser/commit/217487c1b20c741ef0f3d4ed12d2067c471b6f24))
+
 ## [0.1.1](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.0...tailwindcss-in-browser-v0.1.1) (2024-10-31)
 
 
