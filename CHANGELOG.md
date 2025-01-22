@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.3...tailwindcss-in-browser-v0.2.0) (2025-01-22)
+
+
+### Features
+
+* update to Tailwind 4.0.0 ([a4cdb2f](https://github.com/balintbrews/tailwindcss-in-browser/commit/a4cdb2f663b224aecda0e2ace4c9923e81635b54))
+
 ## [0.1.3](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.2...tailwindcss-in-browser-v0.1.3) (2024-11-22)
 
 
