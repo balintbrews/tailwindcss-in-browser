@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.3...tailwindcss-in-browser-v0.2.0) (2025-04-24)
+
+
+### Features
+
+* update to Tailwind 4.0.0 ([a4cdb2f](https://github.com/balintbrews/tailwindcss-in-browser/commit/a4cdb2f663b224aecda0e2ace4c9923e81635b54))
+* update to Tailwind 4.1.4 ([d8bbb6d](https://github.com/balintbrews/tailwindcss-in-browser/commit/d8bbb6d44dc035bd48ae14527c69432ffb8149d1))
+
+
+### Bug Fixes
+
+* **demo:** add simple app with Vite ([d1de698](https://github.com/balintbrews/tailwindcss-in-browser/commit/d1de698ed2a344feb44721ec648e023f0b670c90))
+
 ## [0.1.3](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.2...tailwindcss-in-browser-v0.1.3) (2024-11-22)
 
 
