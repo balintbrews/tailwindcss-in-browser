@@ -2,31 +2,9 @@
 <html>
   <head>
     <title>tailwindcss-in-browser Demo</title>
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>"
-    />
   </head>
   <body>
-    <script type="module">
-      import buildCss from "./tailwindcss-in-browser-dist/index.js";
-
-      const markup = `
-        <div class="mx-auto flex md:grid mt-2 text-lg hover:underline dark:bg-black"></div>
-      `;
-
-      const css = `
-        @theme {
-          --color-*: initial;
-          --color-black: #000;
-          --breakpoint-md: 768px;
-          --font-size-lg: 24px;
-        }
-      `;
-      buildCss(markup, css, {
-        compileCssOptions: { addPreflight: false },
-        transformCssOptions: { minify: false },
-      }).then(console.log);
-    </script>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

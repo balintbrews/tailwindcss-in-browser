@@ -62,9 +62,4 @@ export default defineConfig({
     // asset file.
     options.assetNames = `[name]-${lightningCssWasmVersion}`;
   },
-  /* eslint-enable no-param-reassign */
-  async onSuccess() {
-    // Copy the `dist` directory to the `demo` folder for easy access.
-    await cp("dist", "demo/tailwindcss-in-browser-dist", { recursive: true });
-  },
 });
