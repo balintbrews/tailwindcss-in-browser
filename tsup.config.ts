@@ -1,4 +1,4 @@
-import { cp, readFile } from "fs/promises";
+import { readFile } from "fs/promises";
 import { createRequire } from "module";
 import path from "path";
 import { defineConfig } from "tsup";

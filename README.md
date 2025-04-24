@@ -71,8 +71,7 @@ This workaround is needed until
    in Rust, and requires a Node.js runtime.
 
 2. Compiling the CSS using the extracted class names happens with Tailwind CSS
-   4, supporting its
-   [CSS-first configuration](https://tailwindcss.com/docs/configuration).
+   4, supporting its [theme variables](https://tailwindcss.com/docs/theme).
 
 3. [Lightning CSS](https://lightningcss.dev) is used to transform the compiled
    CSS for browser compatibility, matching the implementation of Tailwind CSS 4,
@@ -110,14 +109,12 @@ equivalent to calling `buildCss()`.
 
 ### Tailwind CSS 4 configuration
 
-Tailwind CSS 4 uses a
-[CSS-based configuration format](https://tailwindcss.com/docs/configuration).
-Normally in this CSS file you would add `@import "tailwindcss"`, which imports
-the following:
+Tailwind CSS 4 uses a CSS-based configuration format. Normally in this CSS file
+you would add `@import "tailwindcss"`, which imports the following:
 
 - the [`base`/`preflight` layer](https://tailwindcss.com/docs/preflight),
 - the
-  [default Tailwind CSS 4 theme](https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/theme.css);
+  [default Tailwind CSS 4 theme](https://tailwindcss.com/docs/theme#default-theme-variable-reference);
 - the `components` layer —yet to be implemented in Tailwind CSS 4—, and
 - the `utilities` layer where the actual Tailwind CSS classes are defined.
 

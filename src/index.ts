@@ -49,21 +49,21 @@ type CompileCssOptions = {
  *
  * Uses Tailwind 4 where configuration is done via CSS variables.
  * @see https://tailwindcss.com/docs/configuration
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/src/index.ts#L682
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.4/packages/tailwindcss/src/index.ts#L761
  *
  * @param classNameCandidates - The class name candidates for compilation.
  * @param [configurationCss] - CSS that acts as the Tailwind V4 configuration,
  *     as well as any additional CSS. This is where you would normally add
  *     `@import "tailwindcss"`, which imports the followings:
  *       - the default theme,
- *         @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/theme.css
+ *         @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
  *       - the `base`/`preflight` layer,
  *       - the `components` layer —yet to be implemented in Tailwind 4—, and
  *       - the `utilities` layer.
  *     All of the above are already taken care of in this function. All you need
  *     to do is add your customizations with a `@theme` directive. See what you
  *     can override in Tailwind 4's default theme.
- *     @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/tailwindcss/theme.css
+ *     @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
  *     You also have the option to skip adding the `base`/`preflight` layer.
  *     @see {CompileCssOptions.addPreflight}
  * @param options - Options for compiling the CSS.
@@ -107,7 +107,7 @@ type TransformCssOptions = {
  * Uses the WASM build of Lightning CSS to match the behavior of Tailwind 4's
  * CLI.
  *
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.0.0/packages/%40tailwindcss-cli/src/commands/build/index.ts#L434
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.4/packages/%40tailwindcss-node/src/optimize.ts
  *
  * @param css - The CSS to transform.
  * @param options - Options for transforming the CSS.
@@ -121,25 +121,42 @@ async function transformCss(
 ): Promise<string> {
   await lightningCssInit(new URL(lightningCssWasm, import.meta.url).href);
 
-  const { code } = lightningCssTransform({
-    filename: "input.css",
-    code: new TextEncoder().encode(css),
-    minify,
-    drafts: {
-      customMedia: true,
-    },
-    nonStandard: {
-      deepSelectorCombinator: true,
-    },
-    include: LightningCssFeatures.Nesting,
-    exclude: LightningCssFeatures.LogicalProperties,
-    targets: {
-      safari: (16 << 16) | (4 << 8), // eslint-disable-line no-bitwise
-    },
-    errorRecovery: true,
-  });
+  function transform(code: Buffer | Uint8Array) {
+    return lightningCssTransform({
+      filename: "input.css",
+      code: code as any,
+      minify,
+      drafts: {
+        customMedia: true,
+      },
+      nonStandard: {
+        deepSelectorCombinator: true,
+      },
+      include: LightningCssFeatures.Nesting | LightningCssFeatures.MediaQueries,
+      exclude:
+        LightningCssFeatures.LogicalProperties |
+        LightningCssFeatures.DirSelector |
+        LightningCssFeatures.LightDark,
+      targets: {
+        safari: (16 << 16) | (4 << 8),
+        ios_saf: (16 << 16) | (4 << 8),
+        firefox: 128 << 16,
+        chrome: 111 << 16,
+      },
+      errorRecovery: true,
+    }).code;
+  }
 
-  return new TextDecoder().decode(code);
+  // Running Lightning CSS twice to ensure that adjacent rules are merged after
+  // nesting is applied. This creates a more optimized output.
+  let out = new TextDecoder().decode(
+    transform(transform(new TextEncoder().encode(css))),
+  );
+  // Work around an issue where the media query range syntax transpilation
+  // generates code that is invalid with `@media` queries level 3.
+  out = out.replaceAll("@media not (", "@media not all and (");
+
+  return out;
 }
 
 /**

@@ -25,6 +25,7 @@
         "ignoreStrings": true,
         "ignoreTemplateLiterals": true
       }
-    ]
+    ],
+    "no-bitwise": "off"
   }
 }
