@@ -24,7 +24,12 @@ export default defineConfig({
   dts: true,
   clean: true,
   bundle: true,
-  noExternal: ["lightningcss-wasm", "tailwindcss-v3", "tailwindcss-v4"],
+  noExternal: [
+    "css-tree",
+    "lightningcss-wasm",
+    "tailwindcss-v3",
+    "tailwindcss-v4",
+  ],
   loader: {
     // Use the "text" loader from ESBuild for CSS files, so we can use the raw
     // CSS as strings in our processing.

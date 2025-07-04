@@ -19,3 +19,6 @@ jobs:
 
       - name: Run code checks
         run: npm run code:check
+
+      - name: Run unit tests
+        run: npm test -- --run

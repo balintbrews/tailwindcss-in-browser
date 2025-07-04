@@ -7,6 +7,7 @@ import { defaultExtractor as tailwindV3Extractor } from "tailwindcss-v3/lib/lib/
 import { compile as tailwindV4Compile } from "tailwindcss-v4";
 import tailwindV4PreflightCss from "tailwindcss-v4/preflight.css";
 import tailwindV4DefaultThemeCss from "tailwindcss-v4/theme.css";
+import extractImports from "./extract-imports.js";
 
 /**
  * Extracts class name candidates from the given markup.
@@ -77,11 +78,15 @@ async function compileCss(
   configurationCss: string,
   { addPreflight = true }: CompileCssOptions = {},
 ): Promise<string> {
+  // Import at-rules need to be at the top of the CSS.
+  const { cssWithoutImports: configurationCssWithoutImports, importRules } =
+    extractImports(configurationCss);
   const { build } = await tailwindV4Compile(
     `
+    ${importRules}
     ${addPreflight ? tailwindV4PreflightCss : ""}
     ${tailwindV4DefaultThemeCss}
-    ${configurationCss}
+    ${configurationCssWithoutImports}
     @tailwind utilities;
     `,
   );
