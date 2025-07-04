@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.2.0...tailwindcss-in-browser-v0.3.0) (2025-07-04)
+
+
+### Features
+
+* **compileCss:** support [@import](https://github.com/import) at-rules ([#14](https://github.com/balintbrews/tailwindcss-in-browser/issues/14)) ([38120fc](https://github.com/balintbrews/tailwindcss-in-browser/commit/38120fce10540e39957edcea81376b8031638e71))
+
 ## [0.2.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.1.3...tailwindcss-in-browser-v0.2.0) (2025-04-24)
 
 
