@@ -1,7 +1,57 @@
 import { compile as tailwindV4Compile } from "tailwindcss-v4";
-import tailwindV4PreflightCss from "tailwindcss-v4/preflight.css";
-import tailwindV4DefaultThemeCss from "tailwindcss-v4/theme.css";
+import assets from "./assets.js";
 import extractImports from "./extract-imports.js";
+
+/**
+ * Same as loadStylesheet function from `@tailwindcss/browser`,
+ * but with instrumentation removed.
+ *
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/d0a1bd655bfcc51818d2ae064eddef14f4983f67/packages/%40tailwindcss-browser/src/index.ts#L109
+ */
+async function loadStylesheet(id: string, base: string) {
+  if (id === "tailwindcss") {
+    return {
+      path: "virtual:tailwindcss-v4/index.css",
+      base,
+      content: assets.css.index,
+    };
+  }
+  if (
+    id === "tailwindcss/preflight" ||
+    id === "tailwindcss/preflight.css" ||
+    id === "./preflight.css"
+  ) {
+    return {
+      path: "virtual:tailwindcss-v4/preflight.css",
+      base,
+      content: assets.css.preflight,
+    };
+  }
+  if (
+    id === "tailwindcss/theme" ||
+    id === "tailwindcss/theme.css" ||
+    id === "./theme.css"
+  ) {
+    return {
+      path: "virtual:tailwindcss-v4/theme.css",
+      base,
+      content: assets.css.theme,
+    };
+  }
+  if (
+    id === "tailwindcss/utilities" ||
+    id === "tailwindcss/utilities.css" ||
+    id === "./utilities.css"
+  ) {
+    return {
+      path: "virtual:tailwindcss-v4/utilities.css",
+      base,
+      content: assets.css.utilities,
+    };
+  }
+
+  throw new Error(`The browser build does not support @import for "${id}"`);
+}
 
 /**
  * Options for compiling CSS.
@@ -52,13 +102,17 @@ export default async function compileCss(
   const { cssWithoutImports: configurationCssWithoutImports, importRules } =
     extractImports(configurationCss);
   const { build } = await tailwindV4Compile(
+    // Since preflight can be disabled, we need to import each layer explicitly,
+    // instead of just `@import "tailwindcss"`.
     `
     ${importRules}
-    ${addPreflight ? tailwindV4PreflightCss : ""}
-    ${tailwindV4DefaultThemeCss}
+    @layer theme, base, components, utilities;
+    @import "tailwindcss/theme.css" layer(theme);
+    ${addPreflight ? '@import "tailwindcss/preflight.css" layer(base);' : ""}
+    @import "tailwindcss/utilities.css" layer(utilities);
     ${configurationCssWithoutImports}
-    @tailwind utilities;
     `,
+    { loadStylesheet },
   );
   return build(classNameCandidates);
 }
