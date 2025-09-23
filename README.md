@@ -162,6 +162,18 @@ Compiles CSS using Tailwind CSS 4.
 
 **Returns**: `Promise<string>` - Compiled CSS
 
+#### `compilePartialCss()`
+
+Compiles CSS using Tailwind CSS 4 from a CSS string containing `@apply`
+directives.
+
+| Parameter          | Type     | Description                    |
+| ------------------ | -------- | ------------------------------ |
+| `css`              | `string` | CSS string to process.         |
+| `configurationCss` | `string` | Tailwind v4 configuration CSS. |
+
+**Returns**: `Promise<string>` - Compiled CSS
+
 #### `transformCss()`
 
 Transforms CSS for browser compatibility.

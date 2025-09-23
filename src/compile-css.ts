@@ -54,6 +54,93 @@ async function loadStylesheet(id: string, base: string) {
   throw new Error(`The browser build does not support @import for "${id}"`);
 }
 
+const configurationCssId = "tailwindcss-in-browser/configuration";
+
+/**
+ * Creates a stylesheet loader for the Tailwind CSS compiler.
+ *
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration, with
+ *     no @import or @layer at-rules.
+ * @returns The stylesheet loader.
+ */
+function createStylesheetLoader(configurationCss?: string) {
+  return async (id: string, base: string) => {
+    if (configurationCss && id === configurationCssId) {
+      return {
+        path: `virtual:${configurationCssId}.css`,
+        base,
+        content: configurationCss,
+      };
+    }
+    return loadStylesheet(id, base);
+  };
+}
+
+/**
+ * Prepares CSS with @layer and @import at-rules for compiling Tailwind CSS.
+ *
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration, with
+ *     no @import or @layer at-rules.
+ * @param addPreflight - Whether to add the Preflight layer.
+ * @returns The prepared CSS with @layer and @import at-rules.
+ */
+function prepareTailwindConfiguration(
+  configurationCss: string,
+  addPreflight = true,
+): string {
+  // Import at-rules need to be at the top of the CSS.
+  const { cssWithoutImports: configurationCssWithoutImports, importRules } =
+    extractImports(configurationCss);
+  // Since preflight can be disabled, we need to import each layer explicitly,
+  // instead of just `@import "tailwindcss"`.
+  return `
+    ${importRules}
+    @layer theme, base, components, utilities;
+    @import "tailwindcss/theme.css" layer(theme);
+    ${addPreflight ? '@import "tailwindcss/preflight.css" layer(base);' : ""}
+    @import "tailwindcss/utilities.css" layer(utilities);
+    ${configurationCssWithoutImports}
+    `;
+}
+
+/**
+ * Compiles partial CSS that uses `@apply` directives.
+ * @see https://tailwindcss.com/docs/functions-and-directives#apply-directive
+ *
+ * @param css - The CSS containing `@apply` directives. Normally this
+ *     would also contain `@reference` to the Tailwind configuration, but here
+ *     the configuration is provided via `configurationCss` parameter.
+ *     @see https://tailwindcss.com/docs/functions-and-directives#reference-directive
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration,
+ *     as well as any additional CSS. This is where you would normally add
+ *     `@import "tailwindcss"`, which imports the followings:
+ *       - the default theme,
+ *         @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
+ *       - the `base`/`preflight` layer,
+ *       - the `components` layer, and
+ *       - the `utilities` layer.
+ *     All of the above are already taken care of in this function. All you need
+ *     to do is add your customizations with a `@theme` directive. See what you
+ *     can override in Tailwind 4's default theme.
+ *     @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
+ */
+export async function compilePartialCss(
+  css: string,
+  configurationCss: string,
+): Promise<string> {
+  const tailwindConfiguration = prepareTailwindConfiguration(configurationCss);
+  const compiler = await tailwindV4Compile(
+    `
+    @reference "${configurationCssId}";
+    ${css}
+    `,
+    { loadStylesheet: createStylesheetLoader(tailwindConfiguration) },
+  );
+  // Component CSS does not need separate class name candidates,
+  // it provides class names via `@apply` directives.
+  return compiler.build([]);
+}
+
 /**
  * Options for compiling CSS.
  * @see {compileCss}
@@ -74,7 +161,7 @@ export interface CompileCssOptions {
  * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/tailwindcss/src/index.ts#L699
  *
  * @param classNameCandidates - The class name candidates for compilation.
- * @param [configurationCss] - CSS that acts as the Tailwind V4 configuration,
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration,
  *     as well as any additional CSS. This is where you would normally add
  *     `@import "tailwindcss"`, which imports the followings:
  *       - the default theme,
@@ -99,21 +186,9 @@ export default async function compileCss(
   configurationCss: string,
   { addPreflight = true }: CompileCssOptions = {},
 ): Promise<string> {
-  // Import at-rules need to be at the top of the CSS.
-  const { cssWithoutImports: configurationCssWithoutImports, importRules } =
-    extractImports(configurationCss);
   const compiler = await tailwindV4Compile(
-    // Since preflight can be disabled, we need to import each layer explicitly,
-    // instead of just `@import "tailwindcss"`.
-    `
-    ${importRules}
-    @layer theme, base, components, utilities;
-    @import "tailwindcss/theme.css" layer(theme);
-    ${addPreflight ? '@import "tailwindcss/preflight.css" layer(base);' : ""}
-    @import "tailwindcss/utilities.css" layer(utilities);
-    ${configurationCssWithoutImports}
-    `,
-    { loadStylesheet },
+    prepareTailwindConfiguration(configurationCss, addPreflight),
+    { loadStylesheet: createStylesheetLoader() },
   );
   return compiler.build(classNameCandidates);
 }
