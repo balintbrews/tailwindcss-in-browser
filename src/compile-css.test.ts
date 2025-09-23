@@ -36,3 +36,21 @@ it("compiled partial css should be able to use values from customized configurat
     `.test {  color: var(--color-coffee, #6f4e37);}`,
   );
 });
+
+it("compiled partial css should only use theme variables from customized configuration", async () => {
+  const css = `.test { @apply text-red-500; } .test2 { @apply text-coffee; }`;
+  const configurationCss = `
+    @theme { --color-coffee: #6f4e37; }
+    body { overflow-y: hidden; }
+  `;
+  const compiledCss = await compilePartialCss(css, configurationCss)
+    // Remove line breaks for easier testing.
+    .then((css) => css.replace(/(\r\n|\n|\r)/gm, ""));
+  expect(compiledCss).toContain(
+    `.test {  color: var(--color-red-500, oklch(63.7% 0.237 25.331));}`,
+  );
+  expect(compiledCss).toContain(
+    `.test2 {  color: var(--color-coffee, #6f4e37);}`,
+  );
+  expect(compiledCss).not.toContain("body");
+});
