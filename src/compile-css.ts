@@ -8,6 +8,7 @@ import extractImports from "./extract-imports.js";
  *
  * @see https://github.com/tailwindlabs/tailwindcss/blob/d0a1bd655bfcc51818d2ae064eddef14f4983f67/packages/%40tailwindcss-browser/src/index.ts#L109
  */
+// eslint-disable-next-line @typescript-eslint/require-await
 async function loadStylesheet(id: string, base: string) {
   if (id === "tailwindcss") {
     return {
