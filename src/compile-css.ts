@@ -54,7 +54,22 @@ async function loadStylesheet(id: string, base: string) {
   throw new Error(`The browser build does not support @import for "${id}"`);
 }
 
-async function prepareTailwindConfiguration(
+const configurationCssId = "tailwindcss-in-browser/configuration";
+
+function createStylesheetLoader(configurationCss?: string) {
+  return async (id: string, base: string) => {
+    if (configurationCss && id === configurationCssId) {
+      return {
+        path: `virtual:${configurationCssId}.css`,
+        base,
+        content: configurationCss,
+      };
+    }
+    return loadStylesheet(id, base);
+  };
+}
+
+function prepareTailwindConfiguration(
   configurationCss: string,
   addPreflight = true,
 ): string {
@@ -71,6 +86,44 @@ async function prepareTailwindConfiguration(
     @import "tailwindcss/utilities.css" layer(utilities);
     ${configurationCssWithoutImports}
     `;
+}
+
+/**
+ * Compiles component CSS that uses `@apply` directives.
+ * @see https://tailwindcss.com/docs/functions-and-directives#apply-directive
+ *
+ * @param componentCss - The CSS containing `@apply` directives. Normally this
+ *     would also contain `@reference` to the Tailwind configuration, but here
+ *     the configuration is provided via `configurationCss` parameter.
+ *     @see https://tailwindcss.com/docs/functions-and-directives#reference-directive
+ * @param [configurationCss] - CSS that acts as the Tailwind V4 configuration,
+ *     as well as any additional CSS. This is where you would normally add
+ *     `@import "tailwindcss"`, which imports the followings:
+ *       - the default theme,
+ *         @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
+ *       - the `base`/`preflight` layer,
+ *       - the `components` layer —yet to be implemented in Tailwind 4—, and
+ *       - the `utilities` layer.
+ *     All of the above are already taken care of in this function. All you need
+ *     to do is add your customizations with a `@theme` directive. See what you
+ *     can override in Tailwind 4's default theme.
+ *     @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
+ */
+export async function compileComponentCss(
+  componentCss: string,
+  configurationCss: string,
+): Promise<string> {
+  const tailwindConfiguration = prepareTailwindConfiguration(configurationCss);
+  const compiler = await tailwindV4Compile(
+    `
+    @reference "${configurationCssId}";
+    ${componentCss}
+    `,
+    { loadStylesheet: createStylesheetLoader(tailwindConfiguration) },
+  );
+  // Component CSS does not need separate class name candidates,
+  // it provides class names via `@apply` directives.
+  return compiler.build([]);
 }
 
 /**
@@ -120,7 +173,7 @@ export default async function compileCss(
 ): Promise<string> {
   const compiler = await tailwindV4Compile(
     prepareTailwindConfiguration(configurationCss, addPreflight),
-    { loadStylesheet },
+    { loadStylesheet: createStylesheetLoader() },
   );
   return compiler.build(classNameCandidates);
 }
