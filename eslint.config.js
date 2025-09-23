@@ -4,7 +4,7 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig(
   {
-    ignores: ["dist", "node_modules", "demo/tailwindcss-in-browser-dist"],
+    ignores: ["dist", "node_modules", "demo"],
   },
   {
     extends: [

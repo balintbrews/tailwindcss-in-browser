@@ -1,3 +1,4 @@
+// @ts-ignore
 import buildCss from "../tailwindcss-in-browser-dist/index.js";
 
 const markup = `
