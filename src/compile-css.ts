@@ -54,6 +54,25 @@ async function loadStylesheet(id: string, base: string) {
   throw new Error(`The browser build does not support @import for "${id}"`);
 }
 
+async function prepareTailwindConfiguration(
+  configurationCss: string,
+  addPreflight = true,
+): string {
+  // Import at-rules need to be at the top of the CSS.
+  const { cssWithoutImports: configurationCssWithoutImports, importRules } =
+    extractImports(configurationCss);
+  // Since preflight can be disabled, we need to import each layer explicitly,
+  // instead of just `@import "tailwindcss"`.
+  return `
+    ${importRules}
+    @layer theme, base, components, utilities;
+    @import "tailwindcss/theme.css" layer(theme);
+    ${addPreflight ? '@import "tailwindcss/preflight.css" layer(base);' : ""}
+    @import "tailwindcss/utilities.css" layer(utilities);
+    ${configurationCssWithoutImports}
+    `;
+}
+
 /**
  * Options for compiling CSS.
  * @see {compileCss}
@@ -99,20 +118,8 @@ export default async function compileCss(
   configurationCss: string,
   { addPreflight = true }: CompileCssOptions = {},
 ): Promise<string> {
-  // Import at-rules need to be at the top of the CSS.
-  const { cssWithoutImports: configurationCssWithoutImports, importRules } =
-    extractImports(configurationCss);
   const compiler = await tailwindV4Compile(
-    // Since preflight can be disabled, we need to import each layer explicitly,
-    // instead of just `@import "tailwindcss"`.
-    `
-    ${importRules}
-    @layer theme, base, components, utilities;
-    @import "tailwindcss/theme.css" layer(theme);
-    ${addPreflight ? '@import "tailwindcss/preflight.css" layer(base);' : ""}
-    @import "tailwindcss/utilities.css" layer(utilities);
-    ${configurationCssWithoutImports}
-    `,
+    prepareTailwindConfiguration(configurationCss, addPreflight),
     { loadStylesheet },
   );
   return compiler.build(classNameCandidates);
