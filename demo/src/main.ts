@@ -12,7 +12,7 @@ const css = `
           --text-lg--line-height: 1;
         }
       `;
-buildCss(markup, css, {
+void buildCss(markup, css, {
   compileCssOptions: { addPreflight: false },
   transformCssOptions: { minify: false },
-}).then(console.log); // eslint-disable-line no-console
+}).then(console.log);
