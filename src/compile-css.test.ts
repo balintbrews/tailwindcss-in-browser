@@ -15,7 +15,7 @@ it("compiled css should contain standard tailwindcss layers order declaration", 
 });
 
 it("compiled partial css should contain styles of classes from @apply rules", async () => {
-  const css = `.test { @apply text-red-500; }`;
+  const css = `.test { @apply text-red-500; } .test2 { border-radius: 10px; }`;
   const configurationCss = ``; // No custom configuration.
   const compiledCss = await compilePartialCss(css, configurationCss)
     // Remove line breaks for easier testing.
@@ -23,6 +23,7 @@ it("compiled partial css should contain styles of classes from @apply rules", as
   expect(compiledCss).toContain(
     `.test {  color: var(--color-red-500, oklch(63.7% 0.237 25.331));}`,
   );
+  expect(compiledCss).toContain(`.test2 {  border-radius: 10px;}`);
 });
 
 it("compiled partial css should be able to use values from customized configuration", async () => {
