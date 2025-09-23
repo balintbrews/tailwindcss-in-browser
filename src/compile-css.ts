@@ -56,6 +56,13 @@ async function loadStylesheet(id: string, base: string) {
 
 const configurationCssId = "tailwindcss-in-browser/configuration";
 
+/**
+ * Creates a stylesheet loader for the Tailwind CSS compiler.
+ *
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration, with
+ *     no @import or @layer at-rules.
+ * @returns The stylesheet loader.
+ */
 function createStylesheetLoader(configurationCss?: string) {
   return async (id: string, base: string) => {
     if (configurationCss && id === configurationCssId) {
@@ -69,6 +76,14 @@ function createStylesheetLoader(configurationCss?: string) {
   };
 }
 
+/**
+ * Prepares CSS with @layer and @import at-rules for compiling Tailwind CSS.
+ *
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration, with
+ *     no @import or @layer at-rules.
+ * @param addPreflight - Whether to add the Preflight layer.
+ * @returns The prepared CSS with @layer and @import at-rules.
+ */
 function prepareTailwindConfiguration(
   configurationCss: string,
   addPreflight = true,
@@ -96,13 +111,13 @@ function prepareTailwindConfiguration(
  *     would also contain `@reference` to the Tailwind configuration, but here
  *     the configuration is provided via `configurationCss` parameter.
  *     @see https://tailwindcss.com/docs/functions-and-directives#reference-directive
- * @param [configurationCss] - CSS that acts as the Tailwind V4 configuration,
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration,
  *     as well as any additional CSS. This is where you would normally add
  *     `@import "tailwindcss"`, which imports the followings:
  *       - the default theme,
  *         @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
  *       - the `base`/`preflight` layer,
- *       - the `components` layer —yet to be implemented in Tailwind 4—, and
+ *       - the `components` layer, and
  *       - the `utilities` layer.
  *     All of the above are already taken care of in this function. All you need
  *     to do is add your customizations with a `@theme` directive. See what you
@@ -146,7 +161,7 @@ export interface CompileCssOptions {
  * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/tailwindcss/src/index.ts#L699
  *
  * @param classNameCandidates - The class name candidates for compilation.
- * @param [configurationCss] - CSS that acts as the Tailwind V4 configuration,
+ * @param configurationCss - CSS that acts as the Tailwind V4 configuration,
  *     as well as any additional CSS. This is where you would normally add
  *     `@import "tailwindcss"`, which imports the followings:
  *       - the default theme,
