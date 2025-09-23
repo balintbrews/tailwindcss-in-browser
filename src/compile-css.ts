@@ -89,10 +89,10 @@ function prepareTailwindConfiguration(
 }
 
 /**
- * Compiles component CSS that uses `@apply` directives.
+ * Compiles partial CSS that uses `@apply` directives.
  * @see https://tailwindcss.com/docs/functions-and-directives#apply-directive
  *
- * @param componentCss - The CSS containing `@apply` directives. Normally this
+ * @param css - The CSS containing `@apply` directives. Normally this
  *     would also contain `@reference` to the Tailwind configuration, but here
  *     the configuration is provided via `configurationCss` parameter.
  *     @see https://tailwindcss.com/docs/functions-and-directives#reference-directive
@@ -109,15 +109,15 @@ function prepareTailwindConfiguration(
  *     can override in Tailwind 4's default theme.
  *     @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
  */
-export async function compileComponentCss(
-  componentCss: string,
+export async function compilePartialCss(
+  css: string,
   configurationCss: string,
 ): Promise<string> {
   const tailwindConfiguration = prepareTailwindConfiguration(configurationCss);
   const compiler = await tailwindV4Compile(
     `
     @reference "${configurationCssId}";
-    ${componentCss}
+    ${css}
     `,
     { loadStylesheet: createStylesheetLoader(tailwindConfiguration) },
   );

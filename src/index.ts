@@ -1,6 +1,6 @@
 import buildCss from "./build-css.js";
 import compileCss, {
-  compileComponentCss,
+  compilePartialCss,
   type CompileCssOptions,
 } from "./compile-css.js";
 import extractClassNameCandidates from "./extract-class-name-candidates.js";
@@ -9,7 +9,7 @@ import transformCss, { type TransformCssOptions } from "./transform-css.js";
 export {
   extractClassNameCandidates,
   compileCss,
-  compileComponentCss,
+  compilePartialCss,
   transformCss,
 };
 export type { CompileCssOptions, TransformCssOptions };
