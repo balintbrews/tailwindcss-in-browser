@@ -152,7 +152,7 @@ export interface CompileCssOptions {
  *       - the default theme,
  *         @see https://tailwindcss.com/docs/theme#default-theme-variable-reference
  *       - the `base`/`preflight` layer,
- *       - the `components` layer —yet to be implemented in Tailwind 4—, and
+ *       - the `components` layer, and
  *       - the `utilities` layer.
  *     All of the above are already taken care of in this function. All you need
  *     to do is add your customizations with a `@theme` directive. See what you
