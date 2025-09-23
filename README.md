@@ -194,5 +194,5 @@ Transforms CSS for browser compatibility.
   [blog post](https://notes.dt.in.th/TailwindCSS4Alpha14Notes), which served as
   the basis for this implementation.
 - This package was created with sponsorship from
-  [Acquia](https://www.acquia.com/) through work on Drupal's
-  [Experience Builder](https://www.drupal.org/project/experience_builder).
+  [Acquia](https://www.acquia.com/) through work on
+  [Drupal Canvas](https://www.drupal.org/project/canvas).
