@@ -8,14 +8,14 @@ import lightningCssWasm from "lightningcss-wasm/lightningcss_node.wasm";
  * Options for transforming CSS.
  * @see {transformCss}
  */
-export type TransformCssOptions = {
+export interface TransformCssOptions {
   /**
    * Whether to minify the CSS.
    *
    * @default true
    */
   minify?: boolean;
-};
+}
 
 /**
  * Transforms CSS to ensure compatibility with older browsers.
@@ -23,7 +23,7 @@ export type TransformCssOptions = {
  * Uses the WASM build of Lightning CSS to match the behavior of Tailwind 4's
  * CLI.
  *
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.4/packages/%40tailwindcss-node/src/optimize.ts
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/%40tailwindcss-node/src/optimize.ts
  *
  * @param css - The CSS to transform.
  * @param options - Options for transforming the CSS.
@@ -40,7 +40,7 @@ export default async function transformCss(
   function transform(code: Buffer | Uint8Array) {
     return lightningCssTransform({
       filename: "input.css",
-      code: code as any,
+      code: code as unknown as Buffer | Uint8Array,
       minify,
       drafts: {
         customMedia: true,

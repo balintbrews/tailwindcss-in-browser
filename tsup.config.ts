@@ -6,15 +6,18 @@ import { defineConfig } from "tsup";
 // Get the version of the `lightningcss-wasm` package. It will be added to the
 // bundled WASM file's filename in the `tsup` config below (`esbuildOptions` →
 // `assetNames`).
-const lightningCssWasmVersion = await (async () => {
+const lightningCssWasmVersion = await (async (): Promise<string> => {
   const require = createRequire(import.meta.url);
   const lightningCssWasmPackagePath = require.resolve("lightningcss-wasm");
   const lightningCssWasmPackageFullPath = path.join(
     path.dirname(lightningCssWasmPackagePath),
     "package.json",
   );
-  return JSON.parse(await readFile(lightningCssWasmPackageFullPath, "utf8"))
-    .version;
+  return (
+    JSON.parse(await readFile(lightningCssWasmPackageFullPath, "utf8")) as {
+      version: string;
+    }
+  ).version;
 })();
 
 export default defineConfig({
@@ -52,7 +55,6 @@ export default defineConfig({
     // `index.js` file. What's lucky is that it's the only generated JS file.
     js: `import './lightningcss_node-${lightningCssWasmVersion}.wasm?url';`,
   },
-  /* eslint-disable no-param-reassign */
   esbuildOptions(options) {
     // By default esbuild generates a hash for the filename based on the file
     // contents, which would work well, but there is no easy way to access the

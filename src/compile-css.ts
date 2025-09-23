@@ -7,20 +7,20 @@ import extractImports from "./extract-imports.js";
  * Options for compiling CSS.
  * @see {compileCss}
  */
-export type CompileCssOptions = {
+export interface CompileCssOptions {
   /**
    * Whether to add Tailwind's Preflight, a set of base styles and CSS reset.
    * @see https://tailwindcss.com/docs/preflight
    */
   addPreflight?: boolean;
-};
+}
 
 /**
  * Compiles CSS from class name candidates and Tailwind 4 configuration CSS.
  *
  * Uses Tailwind 4 where configuration is done via CSS variables.
  * @see https://tailwindcss.com/docs/configuration
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.4/packages/tailwindcss/src/index.ts#L761
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/tailwindcss/src/index.ts#L699
  *
  * @param classNameCandidates - The class name candidates for compilation.
  * @param [configurationCss] - CSS that acts as the Tailwind V4 configuration,
@@ -51,7 +51,7 @@ export default async function compileCss(
   // Import at-rules need to be at the top of the CSS.
   const { cssWithoutImports: configurationCssWithoutImports, importRules } =
     extractImports(configurationCss);
-  const { build } = await tailwindV4Compile(
+  const compiler = await tailwindV4Compile(
     `
     ${importRules}
     ${addPreflight ? tailwindV4PreflightCss : ""}
@@ -60,5 +60,5 @@ export default async function compileCss(
     @tailwind utilities;
     `,
   );
-  return build(classNameCandidates);
+  return compiler.build(classNameCandidates);
 }
