@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.3.0...tailwindcss-in-browser-v0.4.0) (2025-09-23)
+
+
+### Features
+
+* add compilePartialCss function ([#18](https://github.com/balintbrews/tailwindcss-in-browser/issues/18)) ([05cb64b](https://github.com/balintbrews/tailwindcss-in-browser/commit/05cb64b70e14e168f88af6297c5d3a6df5caa8f9))
+* **compileCss:** use standard css layers for base tailwind styles  ([#17](https://github.com/balintbrews/tailwindcss-in-browser/issues/17)) ([ba0c5eb](https://github.com/balintbrews/tailwindcss-in-browser/commit/ba0c5eb1cc273c81c376663709ffbcfcf76e2018))
+* **packages:** update all; Tailwind 4.1.13, ESLint 9 ([d8b9e3f](https://github.com/balintbrews/tailwindcss-in-browser/commit/d8b9e3fe7d090fd574b6e57e6da9e98866c930ac))
+
+
+### Bug Fixes
+
+* **eslint:** ignore demo ([465a0f2](https://github.com/balintbrews/tailwindcss-in-browser/commit/465a0f295289070a1d802dd996c25a88f3e1b3c9))
+
 ## [0.3.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.2.0...tailwindcss-in-browser-v0.3.0) (2025-07-04)
 
 
