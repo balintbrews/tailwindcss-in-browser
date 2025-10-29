@@ -2,7 +2,7 @@
 import buildCss from "../tailwindcss-in-browser-dist/index.js";
 
 const markup = `
-        <div class="mx-auto flex md:grid mt-2 font-serif text-lg text-red-400 bg-yellow-500 text-shadow-lg hover:underline"></div>
+        <div class="mx-auto hidden md:flex md:grid mt-2 font-serif text-lg text-red-400 bg-yellow-500 text-shadow-lg hover:underline"></div>
       `;
 
 const css = `
@@ -14,6 +14,9 @@ const css = `
         }
       `;
 void buildCss(markup, css, {
-  compileCssOptions: { addPreflight: false },
+  compileCssOptions: {
+    addPreflight: false,
+    unlayeredUtilities: ["block", "flex"],
+  },
   transformCssOptions: { minify: false },
 }).then(console.log);

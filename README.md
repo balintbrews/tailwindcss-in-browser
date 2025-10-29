@@ -189,9 +189,10 @@ Transforms CSS for browser compatibility.
 
 #### `CompileCssOptions`
 
-| Option         | Type      | Default | Description                                                                               |
-| -------------- | --------- | ------- | ----------------------------------------------------------------------------------------- |
-| `addPreflight` | `boolean` | `true`  | Whether to include [Tailwind's Preflight styles](https://tailwindcss.com/docs/preflight). |
+| Option               | Type       | Default | Description                                                                                            |
+| -------------------- | ---------- | ------- | ------------------------------------------------------------------------------------------------------ |
+| `addPreflight`       | `boolean`  | `true`  | Whether to include [Tailwind's Preflight styles](https://tailwindcss.com/docs/preflight).              |
+| `unlayeredUtilities` | `string[]` | `[]`    | Array of utility class names whose compiled CSS should not be placed in the `utilities` cascade layer. |
 
 #### `TransformCssOptions`
 
