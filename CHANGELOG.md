@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.4.0...tailwindcss-in-browser-v0.5.0) (2025-10-31)
+
+
+### Features
+
+* **compile-css:** add option for unlayered utilities ([#20](https://github.com/balintbrews/tailwindcss-in-browser/issues/20)) ([11839de](https://github.com/balintbrews/tailwindcss-in-browser/commit/11839de0c9dff4a5e488302b276edeae6f94e6f7))
+
 ## [0.4.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.3.0...tailwindcss-in-browser-v0.4.0) (2025-09-23)
 
 
