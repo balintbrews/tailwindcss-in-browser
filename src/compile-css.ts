@@ -151,6 +151,45 @@ export interface CompileCssOptions {
    * @see https://tailwindcss.com/docs/preflight
    */
   addPreflight?: boolean;
+  /**
+   * Array of utility class names where the compiled definitions should not be
+   * placed in a CSS cascade layer (i.e. `@layer utilities`).
+   * Class name candidates that end with any of these utility names (e.g., "block",
+   * "md:block", "dark:block" would all match "block") will not be placed in the
+   * `utilities` layer.
+   */
+  unlayeredUtilities?: string[];
+}
+
+/**
+ * Splits class name candidates into layered and unlayered groups based on
+ * unlayered utilities.
+ *
+ * @param classNameCandidates - The class name candidates to split.
+ * @param unlayeredUtilities - Array of utility class names. Candidates that end
+ *     with any of these utilities will be placed in the unlayered group.
+ * @returns An object with `layered` and `unlayered` arrays of class names.
+ */
+export function splitClassNameCandidates(
+  classNameCandidates: string[],
+  unlayeredUtilities: string[],
+): { layered: string[]; unlayered: string[] } {
+  const layered: string[] = [];
+  const unlayered: string[] = [];
+
+  for (const candidate of classNameCandidates) {
+    // Check if this candidate ends with any of the unlayeredUtilities.
+    const shouldUnlayer = unlayeredUtilities.some((utility) =>
+      candidate.endsWith(utility),
+    );
+    if (shouldUnlayer) {
+      unlayered.push(candidate);
+    } else {
+      layered.push(candidate);
+    }
+  }
+
+  return { layered, unlayered };
 }
 
 /**
@@ -177,6 +216,7 @@ export interface CompileCssOptions {
  *     @see {CompileCssOptions.addPreflight}
  * @param options - Options for compiling the CSS.
  * @param [options.addPreflight=true] - @see {CompileCssOptions.addPreflight}
+ * @param [options.unlayeredUtilities] - @see {CompileCssOptions.unlayeredUtilities}
  *
  * @returns The compiled CSS. The syntax is modern CSS syntax that needs to be
  * transformed to ensure compatibility with older browsers.
@@ -184,11 +224,41 @@ export interface CompileCssOptions {
 export default async function compileCss(
   classNameCandidates: string[],
   configurationCss: string,
-  { addPreflight = true }: CompileCssOptions = {},
+  { addPreflight = true, unlayeredUtilities = [] }: CompileCssOptions = {},
 ): Promise<string> {
-  const compiler = await tailwindV4Compile(
-    prepareTailwindConfiguration(configurationCss, addPreflight),
-    { loadStylesheet: createStylesheetLoader() },
-  );
-  return compiler.build(classNameCandidates);
+  // Split classNameCandidates into layered and unlayered sets.
+  const { layered: layeredCandidates, unlayered: unlayeredCandidates } =
+    splitClassNameCandidates(classNameCandidates, unlayeredUtilities);
+
+  // Compile both sets.
+  const compilations = await Promise.all([
+    // Layered compilation (normal behavior):
+    // Always compile to preserve layer structure, even with empty candidates.
+    (async () => {
+      const compiler = await tailwindV4Compile(
+        prepareTailwindConfiguration(configurationCss, addPreflight),
+        { loadStylesheet: createStylesheetLoader() },
+      );
+      return compiler.build(layeredCandidates);
+    })(),
+    // Unlayered compilation:
+    // Only compile if there are unlayered candidates.
+    (async () => {
+      if (unlayeredCandidates.length === 0) {
+        return "";
+      }
+      // Prepare configuration for unlayered compilation.
+      const unlayeredConfiguration = `
+        @import "tailwindcss/theme.css" layer(theme);
+        @import "tailwindcss/utilities.css";
+      `;
+      const compiler = await tailwindV4Compile(unlayeredConfiguration, {
+        loadStylesheet: createStylesheetLoader(),
+      });
+      return compiler.build(unlayeredCandidates);
+    })(),
+  ]);
+
+  // Merge the results, filtering out empty strings
+  return compilations.filter((css) => css.length > 0).join("\n");
 }
