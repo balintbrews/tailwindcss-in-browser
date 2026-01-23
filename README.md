@@ -138,6 +138,37 @@ need to do is add your theme customizations with a `@theme` directive. E.g.:
 }
 ```
 
+#### Using plugins
+
+JavaScript-based Tailwind CSS plugins used with the
+[`@plugin`](https://tailwindcss.com/docs/functions-and-directives#plugin-directive)
+directive are supported through the native browser module resolution.
+
+You can load them using full URLs:
+
+```css
+@plugin "https://esm.sh/@tailwindcss/typography@0.5.19";
+```
+
+or bare specifiers with an
+[import map](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script/type/importmap)
+entry:
+
+```css
+@plugin "@tailwindcss/typography";
+```
+
+```html
+<script type="importmap">
+  {
+    "imports": {
+      ...
+      "@tailwindcss/typography": "./dist/tailwindcss-typography.js",
+    }
+  }
+</script>
+```
+
 ### Utility functions
 
 #### `extractClassNameCandidates()`

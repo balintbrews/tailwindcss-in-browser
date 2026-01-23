@@ -77,6 +77,28 @@ function createStylesheetLoader(configurationCss?: string) {
 }
 
 /**
+ * Module loader for the Tailwind CSS compiler used for loading JavaScript-based plugins.
+ * Uses the native `import()` function to let the browser handle module loading.
+ *
+ * @see https://tailwindcss.com/docs/functions-and-directives#plugin-directive
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/tailwindcss/src/index.ts#L57-L65
+ *
+ * @param id - The module identifier/path/url to import.
+ * @param base - The base path for resolving relative imports.
+ * @returns A promise that resolves to an object containing the module path, base, and the loaded module.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function loadModule(id: string, base: string): Promise<any> {
+  const module = await import(/* @vite-ignore */ id); // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+  return {
+    path: id,
+    base,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    module: module.default ?? module,
+  };
+}
+
+/**
  * Prepares CSS with @layer and @import at-rules for compiling Tailwind CSS.
  *
  * @param configurationCss - CSS that acts as the Tailwind V4 configuration, with
@@ -134,7 +156,10 @@ export async function compilePartialCss(
     @reference "${configurationCssId}";
     ${css}
     `,
-    { loadStylesheet: createStylesheetLoader(tailwindConfiguration) },
+    {
+      loadStylesheet: createStylesheetLoader(tailwindConfiguration),
+      loadModule,
+    },
   );
   // Component CSS does not need separate class name candidates,
   // it provides class names via `@apply` directives.
@@ -237,7 +262,7 @@ export default async function compileCss(
     (async () => {
       const compiler = await tailwindV4Compile(
         prepareTailwindConfiguration(configurationCss, addPreflight),
-        { loadStylesheet: createStylesheetLoader() },
+        { loadStylesheet: createStylesheetLoader(), loadModule },
       );
       return compiler.build(layeredCandidates);
     })(),
@@ -254,6 +279,7 @@ export default async function compileCss(
       `;
       const compiler = await tailwindV4Compile(unlayeredConfiguration, {
         loadStylesheet: createStylesheetLoader(),
+        loadModule,
       });
       return compiler.build(unlayeredCandidates);
     })(),

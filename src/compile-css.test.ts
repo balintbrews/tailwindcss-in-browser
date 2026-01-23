@@ -276,3 +276,51 @@ describe("splitting class name candidates", () => {
     expect(result.unlayered).toEqual(["block", "[&>p]:block", "hover:block"]);
   });
 });
+
+describe("@plugin directive", () => {
+  it("should load plugin from full URL", async () => {
+    const configurationCss = `
+      @plugin "https://esm.sh/@tailwindcss/typography@0.5.19";
+    `;
+
+    const compiledCss = await compileCss(
+      ["prose", "lg:prose-xl"],
+      configurationCss,
+    );
+
+    expect(compiledCss).toContain(".prose");
+    expect(compiledCss).toContain(".lg\\:prose-xl");
+  });
+
+  it("should throw error when used with an invalid URL", async () => {
+    const configurationCss = `
+      @plugin "https://example.com/invalid/tailwind-plugin";
+    `;
+    await expect(compileCss([], configurationCss)).rejects.toThrow(
+      "Failed to fetch dynamically imported module: https://example.com/invalid/tailwind-plugin",
+    );
+  });
+
+  it("should load plugin using bare specifier with import map", async () => {
+    // Entry for '@tailwindcss/typography' is provided in an import map defined in vitest.config.ts.
+    const configurationCss = `
+      @plugin "@tailwindcss/typography";
+    `;
+    const compiledCss = await compileCss(
+      ["prose", "lg:prose-xl"],
+      configurationCss,
+    );
+    expect(compiledCss).toContain(".prose");
+    expect(compiledCss).toContain(".lg\\:prose-xl");
+  });
+
+  it("should throw error when import map entry for bare specifier is missing", async () => {
+    // There is no entry for '@tailwindcss/forms' in the import map used during tests.
+    const configurationCss = `
+      @plugin "@tailwindcss/forms";
+    `;
+    await expect(compileCss(["form-input"], configurationCss)).rejects.toThrow(
+      "Failed to resolve module specifier '@tailwindcss/forms'",
+    );
+  });
+});
