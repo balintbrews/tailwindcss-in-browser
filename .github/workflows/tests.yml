@@ -20,5 +20,8 @@ jobs:
       - name: Run code checks
         run: npm run code:check
 
+      - name: Install Playwright dependencies
+        run: npx playwright install --with-deps
+
       - name: Run unit tests
         run: npm test -- --run
