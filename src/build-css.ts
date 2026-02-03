@@ -1,6 +1,17 @@
+import lightningCssInit from "lightningcss-wasm";
+import lightningCssWasm from "lightningcss-wasm/lightningcss_node.wasm?url";
 import compileCss, { type CompileCssOptions } from "./compile-css.js";
 import extractClassNameCandidates from "./extract-class-name-candidates.js";
 import transformCss, { type TransformCssOptions } from "./transform-css.js";
+
+/**
+ * Options for building CSS.
+ * @see {transformCss}
+ */
+export interface BuildCssOptions {
+  compileCssOptions?: CompileCssOptions;
+  transformCssOptions?: TransformCssOptions;
+}
 
 /**
  * Builds CSS with Tailwind V4 using the given markup and CSS configuration.
@@ -25,20 +36,14 @@ import transformCss, { type TransformCssOptions } from "./transform-css.js";
 export default async function buildCss(
   markup: string,
   configurationCss: string,
-  {
-    compileCssOptions,
-    transformCssOptions,
-  }: {
-    compileCssOptions?: CompileCssOptions;
-    transformCssOptions?: TransformCssOptions;
-  } = {},
+  { compileCssOptions, transformCssOptions }: BuildCssOptions = {},
 ): Promise<string> {
+  await lightningCssInit(new URL(lightningCssWasm, import.meta.url));
   const classNameCandidates = extractClassNameCandidates(markup);
   const compiledCss = await compileCss(
     classNameCandidates,
     configurationCss,
     compileCssOptions,
   );
-  const transformedCss = await transformCss(compiledCss, transformCssOptions);
-  return transformedCss;
+  return transformCss(compiledCss, transformCssOptions);
 }

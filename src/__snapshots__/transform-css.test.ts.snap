@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`transform CSS > CSS is minified 1`] = `".rule{font-weight:700}"`;
+
+exports[`transform CSS > invalid media queries are fixed 1`] = `"@media not all and (min-width:640px){.rule{font-weight:700}}"`;
