@@ -34,10 +34,9 @@ export default async function transformCss(
   css: string,
   { minify = true }: TransformCssOptions = {},
 ): Promise<string> {
-  // Reference the bundled WASM file with a relative path literal so bundlers
-  // can statically analyze it and resolve it to the emitted asset. The file is
-  // emitted next to this module (see `tsdown.config.ts`).
-  await lightningCssInit(new URL("./lightningcss_node.wasm", import.meta.url).href);
+  await lightningCssInit(
+    new URL("./lightningcss_node.wasm", import.meta.url).href,
+  );
 
   function transform(code: Buffer | Uint8Array) {
     return lightningCssTransform({
