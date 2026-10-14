@@ -37,12 +37,12 @@ export default defineConfig({
   copy: [{ from: lightningCssWasmPath, flatten: true }],
   plugins: [
     {
-      // The Tailwind CSS files are imported as raw text (their contents are
-      // used as strings). They are imported with a `?raw` suffix (a Vite
-      // convention). Rolldown doesn't resolve query suffixes, and tsdown's CSS
-      // handling matches modules by their `.css` id (requiring `@tsdown/css`),
-      // so resolve the real file, then load its contents through a virtual
-      // module id that the text loader handles.
+      // Load the Tailwind CSS files as raw strings via a virtual module. The
+      // source imports them with a `?raw` suffix (a Vite convention Rolldown
+      // doesn't resolve), and their contents must stay verbatim because they're
+      // fed as `@import` sources into the browser-side Tailwind compiler.
+      // tsdown's CSS handling would process them (and require `@tsdown/css`),
+      // so route them through a virtual id that doesn't end in `.css`.
       name: "raw-imports",
       resolveId: {
         filter: { id: /\?raw$/ },
@@ -51,8 +51,6 @@ export default defineConfig({
           const resolved = await this.resolve(cleanSource, importer, {
             skipSelf: true,
           });
-          // Use a virtual id that doesn't end in `.css` so tsdown's CSS
-          // handling (which matches on the id) leaves it to the text loader.
           return resolved ? `${resolved.id}\0raw` : null;
         },
       },
