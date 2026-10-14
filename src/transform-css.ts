@@ -2,7 +2,6 @@ import lightningCssInit, {
   Features as LightningCssFeatures,
   transform as lightningCssTransform,
 } from "lightningcss-wasm";
-import lightningCssWasm from "lightningcss-wasm/lightningcss_node.wasm";
 
 /**
  * Options for transforming CSS.
@@ -35,7 +34,10 @@ export default async function transformCss(
   css: string,
   { minify = true }: TransformCssOptions = {},
 ): Promise<string> {
-  await lightningCssInit(new URL(lightningCssWasm, import.meta.url).href);
+  // Reference the bundled WASM file with a relative path literal so bundlers
+  // can statically analyze it and resolve it to the emitted asset. The file is
+  // emitted next to this module (see `tsdown.config.ts`).
+  await lightningCssInit(new URL("./lightningcss_node.wasm", import.meta.url).href);
 
   function transform(code: Buffer | Uint8Array) {
     return lightningCssTransform({
