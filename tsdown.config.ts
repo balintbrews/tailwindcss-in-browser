@@ -23,6 +23,8 @@ export default defineConfig({
     ],
   },
   // Ship the Lightning CSS WASM binary as a static asset alongside the bundle.
+  // The runtime loads it over HTTP via a relative URL, so it must exist next to
+  // the output with this exact filename.
   copy: [{ from: lightningCssWasmPath, flatten: true }],
   plugins: [
     {

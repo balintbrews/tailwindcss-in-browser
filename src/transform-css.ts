@@ -14,6 +14,21 @@ export interface TransformCssOptions {
    * @default true
    */
   minify?: boolean;
+  /**
+   * URL of the Lightning CSS WASM binary (`lightningcss_node.wasm`).
+   *
+   * By default, the binary is loaded from next to this bundle via
+   * `new URL("./lightningcss_node.wasm", import.meta.url)`. Bundlers such as
+   * Vite copy the file into your build and rewrite that URL using their
+   * configured base path (e.g. `/assets/lightningcss_node.wasm`). Set this
+   * if your app serves its assets from a different path than the bundler's base path.
+   *
+   * The binary is loaded once, on the first `transformCss()` call, so only the
+   * value passed to that call is used.
+   *
+   * @default new URL("./lightningcss_node.wasm", import.meta.url)
+   */
+  wasmUrl?: string | URL;
 }
 
 /**
@@ -27,15 +42,20 @@ export interface TransformCssOptions {
  * @param css - The CSS to transform.
  * @param options - Options for transforming the CSS.
  * @param [options.minify=true] - @see {TransformCssOptions.minify}
+ * @param [options.wasmUrl] - @see {TransformCssOptions.wasmUrl}
  *
  * @returns The transformed CSS.
  */
 export default async function transformCss(
   css: string,
-  { minify = true }: TransformCssOptions = {},
+  { minify = true, wasmUrl }: TransformCssOptions = {},
 ): Promise<string> {
   await lightningCssInit(
-    new URL("./lightningcss_node.wasm", import.meta.url).href,
+    // Keep `new URL()` with a string literal inline: bundlers (e.g. Vite) only
+    // detect and rewrite asset URLs in this exact form. The file is copied next
+    // to the bundle by the build (see `copy` in `tsdown.config.ts`).
+    wasmUrl?.toString() ??
+      new URL("./lightningcss_node.wasm", import.meta.url).href,
   );
 
   function transform(code: Buffer | Uint8Array) {

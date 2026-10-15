@@ -227,9 +227,10 @@ Transforms CSS for browser compatibility.
 
 #### `TransformCssOptions`
 
-| Option   | Type      | Default | Description                       |
-| -------- | --------- | ------- | --------------------------------- |
-| `minify` | `boolean` | `true`  | Whether to minify the output CSS. |
+| Option    | Type            | Default                                     | Description                                                                                                                                                                                         |
+| --------- | --------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `minify`  | `boolean`       | `true`                                      | Whether to minify the output CSS.                                                                                                                                                                   |
+| `wasmUrl` | `string \| URL` | `lightningcss_node.wasm` next to the bundle | URL of the Lightning CSS WASM binary. Set it if your app serves that file from a different URL than your bundler assumes. |
 
 ## Credits
 
