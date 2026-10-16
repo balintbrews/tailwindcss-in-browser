@@ -2,6 +2,7 @@ import lightningCssInit, {
   Features as LightningCssFeatures,
   transform as lightningCssTransform,
 } from "lightningcss-wasm";
+import resolveWasmUrl from "./wasm-url.js";
 
 /**
  * Options for transforming CSS.
@@ -22,20 +23,6 @@ export interface TransformCssOptions {
    * @example "/modules/my-module/dist/assets"
    */
   wasmBaseUrl?: string | URL;
-}
-
-/**
- * Returns the last path segment of a URL, without query string or fragment.
- */
-function getFileName(url: string): string {
-  return new URL(url).pathname.split("/").pop() ?? "";
-}
-
-/**
- * Joins a base URL and a file name with exactly one slash between them.
- */
-function joinUrl(baseUrl: string, fileName: string): string {
-  return `${baseUrl.replace(/\/+$/, "")}/${fileName}`;
 }
 
 /**
@@ -63,11 +50,7 @@ export default async function transformCss(
     import.meta.url,
   ).href;
 
-  await lightningCssInit(
-    wasmBaseUrl
-      ? joinUrl(wasmBaseUrl.toString(), getFileName(defaultWasmUrl))
-      : defaultWasmUrl,
-  );
+  await lightningCssInit(resolveWasmUrl(defaultWasmUrl, wasmBaseUrl));
 
   function transform(code: Buffer | Uint8Array) {
     return lightningCssTransform({
