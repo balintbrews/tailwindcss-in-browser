@@ -1,4 +1,6 @@
+import { readFileSync } from "fs";
 import { createRequire } from "module";
+import { dirname, join } from "path";
 import { defineConfig } from "tsdown";
 
 // Resolve the Lightning CSS WASM file shipped by the `lightningcss-wasm`
@@ -7,8 +9,15 @@ const require = createRequire(import.meta.url);
 const lightningCssWasmPath = require.resolve(
   "lightningcss-wasm/lightningcss_node.wasm",
 );
+// `lightningcss-wasm` doesn't export its `package.json`, so read it from disk.
+const { version: lightningCssWasmVersion } = JSON.parse(
+  readFileSync(join(dirname(lightningCssWasmPath), "package.json"), "utf8"),
+) as { version: string };
 
 export default defineConfig({
+  define: {
+    __LIGHTNINGCSS_WASM_VERSION__: JSON.stringify(lightningCssWasmVersion),
+  },
   platform: "browser",
   entry: ["src/index.ts"],
   format: ["esm"],
@@ -25,7 +34,13 @@ export default defineConfig({
   // Ship the Lightning CSS WASM binary as a static asset alongside the bundle.
   // The runtime loads it over HTTP via a relative URL, so it must exist next to
   // the output with this exact filename.
-  copy: [{ from: lightningCssWasmPath, flatten: true }],
+  copy: [
+    {
+      from: lightningCssWasmPath,
+      flatten: true,
+      rename: `lightningcss_node-${lightningCssWasmVersion}.wasm`,
+    },
+  ],
   plugins: [
     {
       // The source imports Tailwind's CSS as `?raw` strings (a Vite convention, so

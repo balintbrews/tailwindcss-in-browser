@@ -227,10 +227,10 @@ Transforms CSS for browser compatibility.
 
 #### `TransformCssOptions`
 
-| Option    | Type            | Default                                     | Description                                                                                                                                                                                         |
-| --------- | --------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `minify`  | `boolean`       | `true`                                      | Whether to minify the output CSS.                                                                                                                                                                   |
-| `wasmUrl` | `string \| URL` | `lightningcss_node.wasm` next to the bundle | URL of the Lightning CSS WASM binary. Set it if your app serves that file from a different URL than your bundler assumes. |
+| Option        | Type            | Default                      | Description                                                                                                                                                                                                                                   |
+| ------------- | --------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `minify`      | `boolean`       | `true`                       | Whether to minify the output CSS.                                                                                                                                                                                                             |
+| `wasmBaseUrl` | `string \| URL` | The directory of the WASM file | Base URL of the directory the Lightning CSS WASM binary is served from. Set it if your app serves assets from a different path than your bundler assumes. |
 
 ## Credits
 

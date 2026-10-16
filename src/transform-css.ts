@@ -15,20 +15,27 @@ export interface TransformCssOptions {
    */
   minify?: boolean;
   /**
-   * URL of the Lightning CSS WASM binary (`lightningcss_node.wasm`).
+   * Define the base URL of the directory the Lightning CSS WASM binary is
+   * served from if necessary. Use if your app serves its assets from a different
+   * path than what the app's bundler assumes.
    *
-   * By default, the binary is loaded from next to this bundle via
-   * `new URL("./lightningcss_node.wasm", import.meta.url)`. Bundlers such as
-   * Vite copy the file into your build and rewrite that URL using their
-   * configured base path (e.g. `/assets/lightningcss_node.wasm`). Set this
-   * if your app serves its assets from a different path than the bundler's base path.
-   *
-   * The binary is loaded once, on the first `transformCss()` call, so only the
-   * value passed to that call is used.
-   *
-   * @default new URL("./lightningcss_node.wasm", import.meta.url)
+   * @example "/modules/my-module/dist/assets"
    */
-  wasmUrl?: string | URL;
+  wasmBaseUrl?: string | URL;
+}
+
+/**
+ * Returns the last path segment of a URL, without query string or fragment.
+ */
+function getFileName(url: string): string {
+  return new URL(url).pathname.split("/").pop() ?? "";
+}
+
+/**
+ * Joins a base URL and a file name with exactly one slash between them.
+ */
+function joinUrl(baseUrl: string, fileName: string): string {
+  return `${baseUrl.replace(/\/+$/, "")}/${fileName}`;
 }
 
 /**
@@ -42,20 +49,24 @@ export interface TransformCssOptions {
  * @param css - The CSS to transform.
  * @param options - Options for transforming the CSS.
  * @param [options.minify=true] - @see {TransformCssOptions.minify}
- * @param [options.wasmUrl] - @see {TransformCssOptions.wasmUrl}
+ * @param [options.wasmBaseUrl] - @see {TransformCssOptions.wasmBaseUrl}
  *
  * @returns The transformed CSS.
  */
 export default async function transformCss(
   css: string,
-  { minify = true, wasmUrl }: TransformCssOptions = {},
+  { minify = true, wasmBaseUrl }: TransformCssOptions = {},
 ): Promise<string> {
+  // The version number is inlined at build time (see `define` in `tsdown.config.ts`),
+  const defaultWasmUrl = new URL(
+    `./lightningcss_node-${__LIGHTNINGCSS_WASM_VERSION__}.wasm`,
+    import.meta.url,
+  ).href;
+
   await lightningCssInit(
-    // Keep `new URL()` with a string literal inline: bundlers (e.g. Vite) only
-    // detect and rewrite asset URLs in this exact form. The file is copied next
-    // to the bundle by the build (see `copy` in `tsdown.config.ts`).
-    wasmUrl?.toString() ??
-      new URL("./lightningcss_node.wasm", import.meta.url).href,
+    wasmBaseUrl
+      ? joinUrl(wasmBaseUrl.toString(), getFileName(defaultWasmUrl))
+      : defaultWasmUrl,
   );
 
   function transform(code: Buffer | Uint8Array) {
