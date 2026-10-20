@@ -49,21 +49,6 @@ and directly in browsers:
 </script>
 ```
 
-## Note for Vite users
-
-If you use Vite, add the following to your config:
-
-```javascript
-{
-  optimizeDeps: {
-    exclude: ["tailwindcss-in-browser"],
-  },
-};
-```
-
-This workaround is needed until
-[vitejs/vite#8427](https://github.com/vitejs/vite/issues/8427) is fixed.
-
 ## How it works
 
 1. A function from Tailwind CSS 3 is used to extract class names from the
@@ -227,9 +212,10 @@ Transforms CSS for browser compatibility.
 
 #### `TransformCssOptions`
 
-| Option   | Type      | Default | Description                       |
-| -------- | --------- | ------- | --------------------------------- |
-| `minify` | `boolean` | `true`  | Whether to minify the output CSS. |
+| Option        | Type            | Default                        | Description                                                                                                                                               |
+| ------------- | --------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `minify`      | `boolean`       | `true`                         | Whether to minify the output CSS.                                                                                                                         |
+| `wasmBaseUrl` | `string \| URL` | The directory of the WASM file | Base URL of the directory the Lightning CSS WASM binary is served from. Set it if your app serves assets from a different path than your bundler assumes. |
 
 ## Credits
 

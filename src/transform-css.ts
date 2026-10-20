@@ -2,7 +2,7 @@ import lightningCssInit, {
   Features as LightningCssFeatures,
   transform as lightningCssTransform,
 } from "lightningcss-wasm";
-import lightningCssWasm from "lightningcss-wasm/lightningcss_node.wasm";
+import resolveWasmUrl from "./wasm-url.js";
 
 /**
  * Options for transforming CSS.
@@ -15,6 +15,14 @@ export interface TransformCssOptions {
    * @default true
    */
   minify?: boolean;
+  /**
+   * Define the base URL of the directory the Lightning CSS WASM binary is
+   * served from if necessary. Use if your app serves its assets from a different
+   * path than what the app's bundler assumes.
+   *
+   * @example "/modules/my-module/dist/assets"
+   */
+  wasmBaseUrl?: string | URL;
 }
 
 /**
@@ -28,14 +36,21 @@ export interface TransformCssOptions {
  * @param css - The CSS to transform.
  * @param options - Options for transforming the CSS.
  * @param [options.minify=true] - @see {TransformCssOptions.minify}
+ * @param [options.wasmBaseUrl] - @see {TransformCssOptions.wasmBaseUrl}
  *
  * @returns The transformed CSS.
  */
 export default async function transformCss(
   css: string,
-  { minify = true }: TransformCssOptions = {},
+  { minify = true, wasmBaseUrl }: TransformCssOptions = {},
 ): Promise<string> {
-  await lightningCssInit(new URL(lightningCssWasm, import.meta.url).href);
+  // The version number is inlined at build time (see `define` in `tsdown.config.ts`),
+  const defaultWasmUrl = new URL(
+    `./lightningcss_node-${__LIGHTNINGCSS_WASM_VERSION__}.wasm`,
+    import.meta.url,
+  ).href;
+
+  await lightningCssInit(resolveWasmUrl(defaultWasmUrl, wasmBaseUrl));
 
   function transform(code: Buffer | Uint8Array) {
     return lightningCssTransform({
