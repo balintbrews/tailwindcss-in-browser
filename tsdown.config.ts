@@ -6,9 +6,8 @@ import { defineConfig } from "tsdown";
 // Resolve the Lightning CSS WASM file shipped by the `lightningcss-wasm`
 // package. It is copied into the output directory in the `copy` option below.
 const require = createRequire(import.meta.url);
-const lightningCssWasmPath = require.resolve(
-  "lightningcss-wasm/lightningcss_node.wasm",
-);
+const lightningCssWasmPath =
+  require.resolve("lightningcss-wasm/lightningcss_node.wasm");
 // `lightningcss-wasm` doesn't export its `package.json`, so read it from disk.
 const { version: lightningCssWasmVersion } = JSON.parse(
   readFileSync(join(dirname(lightningCssWasmPath), "package.json"), "utf8"),

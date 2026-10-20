@@ -2,5 +2,5 @@
   "proseWrap": "always",
   "plugins": ["@ianvs/prettier-plugin-sort-imports"],
   "importOrderParserPlugins": ["typescript"],
-  "importOrderTypeScriptVersion": "5.9.2"
+  "importOrderTypeScriptVersion": "6.0.3"
 }

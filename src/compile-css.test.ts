@@ -25,7 +25,7 @@ describe("compiled CSS", () => {
     });
 
     expect(compiledCss).toMatchInlineSnapshot(`
-      "/*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      "/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       @layer theme, base, components, utilities;
       @layer theme {
         :root, :host {
@@ -38,7 +38,7 @@ describe("compiled CSS", () => {
         }
       }
 
-      /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       .block {
         display: block;
       }
@@ -54,7 +54,7 @@ describe("compiled CSS", () => {
     );
 
     expect(compiledCss).toMatchInlineSnapshot(`
-      "/*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      "/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       @layer theme, base, components, utilities;
       @layer theme {
         :root, :host {
@@ -67,17 +67,17 @@ describe("compiled CSS", () => {
         }
       }
 
-      /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       .block {
         display: block;
       }
-      .md\\:block {
-        @media (width >= 48rem) {
+      @media (width >= 48rem) {
+        .md\\:block {
           display: block;
         }
       }
-      .dark\\:block {
-        @media (prefers-color-scheme: dark) {
+      @media (prefers-color-scheme: dark) {
+        .dark\\:block {
           display: block;
         }
       }
@@ -93,7 +93,7 @@ describe("compiled CSS", () => {
     );
 
     expect(compiledCss).toMatchInlineSnapshot(`
-      "/*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      "/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       @layer theme, base, components, utilities;
       @layer theme {
         :root, :host {
@@ -110,7 +110,7 @@ describe("compiled CSS", () => {
         }
       }
 
-      /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       .block {
         display: block;
       }
@@ -128,7 +128,7 @@ describe("compiled CSS", () => {
     });
 
     expect(compiledCss).toMatchInlineSnapshot(`
-      "/*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      "/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       @layer theme, base, components, utilities;
       @layer theme {
         :root, :host {
@@ -155,7 +155,7 @@ describe("compiled CSS", () => {
     );
 
     expect(compiledCss).toMatchInlineSnapshot(`
-      "/*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      "/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       @layer theme, base, components, utilities;
       @layer theme {
         :root, :host {
@@ -168,21 +168,17 @@ describe("compiled CSS", () => {
         }
       }
 
-      /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+      /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
       .block {
         display: block;
       }
-      .hover\\:block {
-        &:hover {
-          @media (hover: hover) {
-            display: block;
-          }
-        }
-      }
-      .\\[\\&\\>p\\]\\:block {
-        &>p {
+      @media (hover: hover) {
+        .hover\\:block:hover {
           display: block;
         }
+      }
+      .\\[\\&\\>p\\]\\:block > p {
+        display: block;
       }
       "
     `);

@@ -1,5 +1,5 @@
 /**
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/%40tailwindcss-browser/src/assets.ts
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.3.3/packages/%40tailwindcss-browser/src/assets.ts
  */
 import index from "tailwindcss-v4/index.css?raw";
 import preflight from "tailwindcss-v4/preflight.css?raw";
