@@ -31,7 +31,7 @@ export interface TransformCssOptions {
  * Uses the WASM build of Lightning CSS to match the behavior of Tailwind 4's
  * CLI.
  *
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/%40tailwindcss-node/src/optimize.ts
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.3.3/packages/%40tailwindcss-node/src/optimize.ts
  *
  * @param css - The CSS to transform.
  * @param options - Options for transforming the CSS.
@@ -55,7 +55,7 @@ export default async function transformCss(
   function transform(code: Buffer | Uint8Array) {
     return lightningCssTransform({
       filename: "input.css",
-      code: code as unknown as Buffer | Uint8Array,
+      code,
       minify,
       drafts: {
         customMedia: true,
@@ -80,6 +80,9 @@ export default async function transformCss(
 
   // Running Lightning CSS twice to ensure that adjacent rules are merged after
   // nesting is applied. This creates a more optimized output.
+  // Upstream also logs Lightning CSS warnings to the console between the two
+  // passes. That is formatted for the terminal and doesn't affect the output,
+  // so it's left out here.
   let out = new TextDecoder().decode(
     transform(transform(new TextEncoder().encode(css))),
   );

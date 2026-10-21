@@ -6,7 +6,7 @@ import extractImports from "./extract-imports.js";
  * Same as loadStylesheet function from `@tailwindcss/browser`,
  * but with instrumentation removed.
  *
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/%40tailwindcss-browser/src/index.ts#L109
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.3.3/packages/%40tailwindcss-browser/src/index.ts#L109
  */
 // eslint-disable-next-line @typescript-eslint/require-await
 async function loadStylesheet(id: string, base: string) {
@@ -81,7 +81,7 @@ function createStylesheetLoader(configurationCss?: string) {
  * Uses the native `import()` function to let the browser handle module loading.
  *
  * @see https://tailwindcss.com/docs/functions-and-directives#plugin-directive
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/tailwindcss/src/index.ts#L57-L65
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.3.3/packages/tailwindcss/src/index.ts#L59-L67
  *
  * @param id - The module identifier/path/url to import.
  * @param base - The base path for resolving relative imports.
@@ -222,7 +222,7 @@ export function splitClassNameCandidates(
  *
  * Uses Tailwind 4 where configuration is done via CSS variables.
  * @see https://tailwindcss.com/docs/configuration
- * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.1.13/packages/tailwindcss/src/index.ts#L699
+ * @see https://github.com/tailwindlabs/tailwindcss/blob/v4.3.3/packages/tailwindcss/src/index.ts#L820
  *
  * @param classNameCandidates - The class name candidates for compilation.
  * @param configurationCss - CSS that acts as the Tailwind V4 configuration,

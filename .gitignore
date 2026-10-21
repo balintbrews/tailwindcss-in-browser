@@ -1,3 +1,4 @@
 dist
 node_modules
 demo/tailwindcss-in-browser-dist
+.vitest
