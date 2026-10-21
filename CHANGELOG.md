@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.6.0...tailwindcss-in-browser-v0.7.0) (2026-10-21)
+
+
+### Features
+
+* add wasmBaseUrl option and migrate the build from tsup to tsdown ([#26](https://github.com/balintbrews/tailwindcss-in-browser/issues/26)) ([fd4042b](https://github.com/balintbrews/tailwindcss-in-browser/commit/fd4042bb0070dcb42b780704886d9fcc27f83702))
+* update all packages; Tailwind 4.3.3, ESLint 10, Vitest 5 ([#28](https://github.com/balintbrews/tailwindcss-in-browser/issues/28)) ([6038d4c](https://github.com/balintbrews/tailwindcss-in-browser/commit/6038d4c728ebb699310ed2d5161a8b3df1058f82))
+
 ## [0.6.0](https://github.com/balintbrews/tailwindcss-in-browser/compare/tailwindcss-in-browser-v0.5.0...tailwindcss-in-browser-v0.6.0) (2026-01-27)
 
 
